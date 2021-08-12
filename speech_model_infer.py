@@ -1,13 +1,14 @@
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join('./scripts')))
+
 import tensorflow as tf
 import librosa
 from scripts.model2 import CNN_net, BidirectionalRNN2, preprocessin_model
 from scripts.model_helper import predict, build_model2
 import scripts.helper as helper
 from scripts.tokenizer import Tokenizer
-import streamlit as st
-import os
-import sys
-sys.path.append(os.path.abspath(os.path.join('./scripts')))
+
 
 
 # sys.path.append(os.path.abspath(os.path.join('./scripts')))
