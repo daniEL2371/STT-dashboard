@@ -1,18 +1,16 @@
+import streamlit as st
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.join('./scripts')))
 
-import tensorflow as tf
-import librosa
-from scripts.model2 import CNN_net, BidirectionalRNN2, preprocessin_model
-from scripts.model_helper import predict, build_model2
-import scripts.helper as helper
 from scripts.tokenizer import Tokenizer
-
-
+import scripts.helper as helper
+from scripts.model_helper import predict, build_model2
+from scripts.model2 import CNN_net, BidirectionalRNN2, preprocessin_model
+import librosa
+import tensorflow as tf
 
 # sys.path.append(os.path.abspath(os.path.join('./scripts')))
-
 
 class Speech_Model_Infer:
 
@@ -34,7 +32,7 @@ class Speech_Model_Infer:
 
         self.cnn_bi_rnn_model = build_model2(
             self.output_dim, self.cnn_model, self.BI_RNN_2, self.preprocess_model)
-        self.cnn_bi_rnn_model.load_weights("../models/cnn-bi-rnn.h5")
+        self.cnn_bi_rnn_model.load_weights("./models/cnn-bi-rnn.h5")
 
         self.int_to_char = helper.read_obj("./int_to_char.pkl")
         self.char_to_int = helper.read_obj("./char_to_int.pkl")
@@ -42,8 +40,13 @@ class Speech_Model_Infer:
         self.tokenizer = Tokenizer(None)
 
     def predict(self, audio_file):
-
+        
         wav, _ = librosa.load(audio_file, sr=self.sample_rate)
         pred, _ = predict(self.cnn_bi_rnn_model, wav,
                           self.tokenizer, self.int_to_char, None)
         return pred
+
+
+if __name__ == "__main__":
+    SI = Speech_Model_Infer()
+    print(SI.predict("./test2.wav"))
